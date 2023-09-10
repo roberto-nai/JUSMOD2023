@@ -4,5 +4,6 @@
 
 The "images" folder contains full-size figures of the article.  
 The "pdf" folder contains the article.  
+The "script" folder contains the developed code.  
 
 PREPRINT
