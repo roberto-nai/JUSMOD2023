@@ -22,7 +22,7 @@ data_dir = "data" # input / output data folder
 guue_dir = "guue" # PDF folder
 file_log = "event_log_IT.csv" # <-- INPUT
 file_new_date_pdf = "event_log_IT_BID-OPENING_nlp_#.csv" # the output filename with new event
-file_nlp_log = "spark_log_#.csv" # NLP task log
+file_task_log = "spark_log_#.csv" # NLP task log
 
 annotator_type = {'DateMatcher':1, 'RegexMatcher':2} # annotator type dict
 annotator = annotator_type["RegexMatcher"] # <-- INPUT: choose the annotator
@@ -92,7 +92,7 @@ def spark_date(list_text, file_name, annotator_type):
     result_df = result.toPandas()
     result_df.insert(0, 'file_name', file_name) # add the file_name to the result df
     # print(result_df.info()) # debug
-    result_df.to_csv(file_nlp_log, sep = ";", index = False, header=False, mode="a") # save the debug log of spark
+    result_df.to_csv(file_task_log, sep = ";", index = False, header=False, mode="a") # save the debug log of spark
     # extract the date
     result_df_date = result_df[['date']]
     prova = result_df_date['date'][0]
@@ -199,7 +199,7 @@ print()
 # Prepare the output file
 
 file_new_date_pdf = file_new_date_pdf.replace("#", str(annotator))
-file_nlp_log = file_nlp_log.replace("#", str(annotator))
+file_task_log = file_task_log.replace("#", str(annotator))
 
 path_out_pdf = os.path.join(data_dir, file_new_date_pdf)
 string_csv_header = "case_id;event;new_date;file_source"+os.linesep
@@ -207,7 +207,7 @@ string_csv_header = "case_id;event;new_date;file_source"+os.linesep
 with open(path_out_pdf, "w") as fp:
     fp.write(string_csv_header)
 
-with open(file_nlp_log, "w") as fp:
+with open(file_task_log, "w") as fp:
     fp.write("Starting time:" + str(t1) + os.linesep)
     fp.write("******" + os.linesep)
 
@@ -271,7 +271,7 @@ delta = t2 - t1
 print("Elapsed time:", delta)
 print()
 
-with open(file_nlp_log, "a") as fp:
+with open(file_task_log, "a") as fp:
     fp.write("******" + os.linesep)
     fp.write("Ending time:" + str(t2) + os.linesep)
     fp.write("Elapsed time:" + str(delta) + os.linesep)
